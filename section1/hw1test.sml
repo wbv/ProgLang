@@ -48,8 +48,8 @@ val test4k = dates_in_month([],12) = [];
 (* just like test3 suite, I'm not sure what to add here *)
 val test5a = dates_in_months([(2012,2,28),(2013,12,1),(2011,3,31),(2011,4,28)],[2,3,4]) = [(2012,2,28),(2011,3,31),(2011,4,28)];
 val test5b = dates_in_months([(2012,2,28),(2013,12,1),(2011,3,31),(2011,4,28)],[]) = [];
-val test5a = dates_in_months([],[2,3,4]) = [];
-val test5a = dates_in_months([],[]) = [];
+val test5c = dates_in_months([],[2,3,4]) = [];
+val test5d = dates_in_months([],[]) = [];
 
 val test6a = get_nth(["hi", "there", "how", "are", "you"], 2) = "there";
 val test6b = get_nth(["hi", "there", "how", "are", "you"], 1) = "hi";
@@ -99,3 +99,20 @@ val tst11b = oldest([]) = NONE;
 val tst11c = oldest([(2012,2,28),(2011,3,31),(2011,3,30)]) = SOME (2011,3,30);
 val tst11d = oldest([(2010,2,28),(2011,3,31),(2011,4,28)]) = SOME (2010,2,28);
 val tst11e = oldest([(2012,3,27),(2012,2,28),(2012,4,26)]) = SOME (2012,2,28);
+
+(* test cases for challenge problem 12 *)
+val tst12a = number_in_months_challenge([(2012,2,28),(2013,12,1),(2011,3,31),(2011,4,28)],[2,3,4]) = 3;
+val tst12b = number_in_months_challenge([(2012,2,28),(2013,12,1),(2011,3,31),(2011,4,28)],[]) = 0;
+val tst12c = number_in_months_challenge([],[2,3,4]) = 0;
+val tst12d = number_in_months_challenge([],[]) = 0;
+val tst12e = number_in_months_challenge([(2012,2,28),(2013,12,1),(2011,3,31),(2011,4,28)],[2,2,2,3,4]) = 3;
+val tst12f = number_in_months_challenge([(2012,2,28),(2013,12,1),(2011,3,31),(2011,4,28)],[2,3,3,4,3,3,3,4,2]) = 3;
+
+(* part 2 of challenge problem 12 *)
+val tst12A = dates_in_months_challenge([(2012,2,28),(2013,12,1),(2011,3,31),(2011,4,28)],[2,3,4]) = [(2012,2,28),(2011,3,31),(2011,4,28)];
+val tst12B = dates_in_months_challenge([(2012,2,28),(2013,12,1),(2011,3,31),(2011,4,28)],[]) = [];
+val tst12C = dates_in_months_challenge([],[2,3,4]) = [];
+val tst12D = dates_in_months_challenge([],[]) = [];
+val tst12E = dates_in_months_challenge([(2012,2,28),(2013,12,1),(2011,3,31),(2011,4,28)],[2,2,2,3,4]) = [(2012,2,28),(2011,3,31),(2011,4,28)];
+val tst12F = dates_in_months_challenge([(2012,2,28),(2013,12,1),(2011,3,31),(2011,4,28)],[2,3,3,4,3,3,3,4]) = [(2012,2,28),(2011,3,31),(2011,4,28)];
+

@@ -129,8 +129,48 @@ fun oldest( dates : (int*int*int) list ) =
 
 (* Challenge Problem 12, part 1 *)
 fun number_in_months_challenge( dates : (int*int*int) list, months : int list ) =
-	false
+	let
+		fun notalreadyin( haystack : int list, key : int ) =
+			if null haystack
+			then true
+			else if hd haystack = key
+				then false
+				else notalreadyin( tl haystack, key )
+		fun new_months( oldlist : int list ) = 
+			if null oldlist
+			then []
+			else 
+				let
+					val tl_newmonths = new_months( tl oldlist )
+				in
+					if notalreadyin( tl_newmonths, hd oldlist )
+					then hd oldlist :: tl_newmonths
+					else tl_newmonths
+				end
+	in
+		number_in_months( dates, new_months( months ) )
+	end
 
 (* Challenge Problem 12, part 2 *)
 fun dates_in_months_challenge( dates : (int*int*int) list, months : int list ) =
-	false
+	let
+		fun notalreadyin( haystack : int list, key : int ) =
+			if null haystack
+			then true
+			else if hd haystack = key
+				then false
+				else notalreadyin( tl haystack, key )
+		fun new_months( oldlist : int list ) = 
+			if null oldlist
+			then []
+			else 
+				let
+					val tl_newmonths = new_months( tl oldlist )
+				in
+					if notalreadyin( tl_newmonths, hd oldlist )
+					then hd oldlist :: tl_newmonths
+					else tl_newmonths
+				end
+	in
+		dates_in_months( dates, new_months( months ) )
+	end
