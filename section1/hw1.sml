@@ -79,9 +79,16 @@ fun date_to_string( date : int*int*int ) =
 	end
 
 (* Problem 8 *)
-(* This one kindof left me stuck. The only way I could figure out
-   how to solve it was by more-or-less using a "while" loop. 
-   I don't know how to do it any better. *)
+fun number_before_reaching_sum( sum : int, numbers : int list ) =
+	if sum - (hd numbers) > 0
+	then 1 + number_before_reaching_sum( sum - (hd numbers), tl numbers )
+	else 0
+
+(* This one left me stuck for a while, and my initial solution was to
+   solve it was by more-or-less using a "while" loop. It felt like cheating
+   so I eventually found a better solution. I'm leaving it here as a reminder
+   to always keep trying. 
+   
 fun number_before_reaching_sum( sum : int, numbers : int list ) =
 	let
 		fun shitty_approach( nums : int list, total : int, count : int ) =
@@ -91,7 +98,7 @@ fun number_before_reaching_sum( sum : int, numbers : int list ) =
 	in
 		shitty_approach( numbers, 0, 0 )
 	end
-
+*) 
 (* Problem 9 *)
 fun what_month( day : int ) = 
 	3
