@@ -99,17 +99,33 @@ fun number_before_reaching_sum( sum : int, numbers : int list ) =
 		shitty_approach( numbers, 0, 0 )
 	end
 *) 
+
 (* Problem 9 *)
 fun what_month( day : int ) = 
-	3
+	let
+		val days_in_month = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ]
+	in
+		number_before_reaching_sum( day, days_in_month ) + 1
+	end
 
 (* Problem 10 *)
-fun month_range( d1 : int, d2 : int ) = 
-	[1,2,2,2]
+fun month_range( day1 : int, day2 : int ) = 
+	if day1 > day2
+	then []
+	else what_month( day1 ) :: month_range( day1 + 1, day2 )
 
 (* Problem 11 *)
 fun oldest( dates : (int*int*int) list ) = 
-	SOME (2011,3,31)
+	if null dates
+	then NONE
+	else 
+		let 
+			val tl_old = oldest( tl dates )
+		in
+			if isSome tl_old andalso is_older( valOf tl_old, hd dates )
+			then tl_old
+			else SOME (hd dates)
+		end
 
 (* Challenge Problem 12, part 1 *)
 fun number_in_months_challenge( dates : (int*int*int) list, months : int list ) =
