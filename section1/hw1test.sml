@@ -116,3 +116,17 @@ val tst12D = dates_in_months_challenge([],[]) = [];
 val tst12E = dates_in_months_challenge([(2012,2,28),(2013,12,1),(2011,3,31),(2011,4,28)],[2,2,2,3,4]) = [(2012,2,28),(2011,3,31),(2011,4,28)];
 val tst12F = dates_in_months_challenge([(2012,2,28),(2013,12,1),(2011,3,31),(2011,4,28)],[2,3,3,4,3,3,3,4]) = [(2012,2,28),(2011,3,31),(2011,4,28)];
 
+(* challenge problem 13 *)
+val tst13a = reasonable_date(2014,10,9) = true;
+val tst13b = reasonable_date(0,2,1) = false;
+val tst13c = reasonable_date(1,2,1) = true;
+val tst13d = reasonable_date(2014,1,99) = false;
+val tst13e = reasonable_date(2001,2,29) = false;
+val tst13f = reasonable_date(2000,2,29) = true;
+val tst13g = reasonable_date(2100,2,29) = false;
+val tst13h = reasonable_date(2014,4,0) = false;
+val tst13i = reasonable_date(2014,4,1) = true;
+val tst13j = reasonable_date(2014,0,1) = false;
+val tst13k = reasonable_date(2014,99,1) = false;
+
+

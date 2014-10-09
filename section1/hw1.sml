@@ -1,5 +1,5 @@
 (* Programming Lanuages - Homework 1
-     written by Walter Vaughan on 2014-10-06 *)
+     written by Walter Vaughan *)
 
 (* Problem 1 *)
 fun is_older( d1 : int*int*int, d2 : int*int*int ) =
@@ -156,3 +156,36 @@ fun number_in_months_challenge( dates : (int*int*int) list, months : int list ) 
 (* Challenge Problem 12, part 2 *)
 fun dates_in_months_challenge( dates : (int*int*int) list, months : int list ) =
 	dates_in_months( dates, remove_duplicates( months ) )
+
+(* Challenge Problem 13 *)
+fun reasonable_date ( date : int*int*int ) =
+	(* check year *)
+	if #1 date < 1
+	then false
+	else
+		(* check month *)
+		if #2 date < 1 orelse #2 date > 12
+		then false
+		else
+			let 
+				val days_in_month = 
+				(* if date is a leap year, feb has different length *)
+				if ((#1 date) mod 4 = 0 andalso (#1 date) mod 100 <> 0)
+					orelse (#1 date) mod 400 = 0
+				then 
+					[ 31, 29, 31, 30, 31, 30, 
+					  31, 31, 30, 31, 30, 31 ]
+				else
+					[ 31, 28, 31, 30, 31, 30, 
+					  31, 31, 30, 31, 30, 31 ]
+				(* helper function for grabbing out of days_in_month *)
+				fun get_days ( m : int , ms : int list ) =
+					if m = 1
+					then hd ms
+					else get_days ( m-1 , tl ms )
+			in
+				if (#3 date) <= get_days( (#2 date), days_in_month ) andalso
+				   (#3 date) >= 1
+				then true
+				else false
+			end
