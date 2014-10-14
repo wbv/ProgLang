@@ -11,21 +11,17 @@ fun same_string(s1 : string, s2 : string) =
 (* Problem 1a) *)
 fun all_except_option( x, xs ) =
 	let
-	fun iterate( x, front, back ) =
-		case back of
-			     [] => NONE
-			| y::ys => if same_string( x, y )
-			           then SOME (front @ ys)
-			           else iterate( x, y::front, ys )
+	fun iterate( x, front, [] )    = NONE
+	  | iterate( x, front, y::ys ) = if same_string( x, y )
+	                               then SOME (front @ ys)
+	                               else iterate( x, y::front, ys )
 	in iterate( x, [], xs ) end
 
 (* Problem 1b) *)
-fun get_substitutions1( subs, s ) =
-	case subs of
-		     [] => []
-		| x::xs => case all_except_option( s, x ) of
-		               NONE    => get_substitutions1( xs, s )
-		             | SOME ys => ys @ get_substitutions1( xs, s )
+fun get_substitutions1( [], s )    = []
+  | get_substitutions1( x::xs, s ) = case all_except_option( s, x ) of
+                                       NONE    => get_substitutions1( xs, s )
+                                     | SOME ys => ys @ get_substitutions1( xs, s )
 
 (* you may assume that Num is always used with values 2, 3, ..., 10
    though it will not really come up *)
