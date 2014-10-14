@@ -22,7 +22,7 @@ val test1c_a = get_substitutions2([["Fred", "Fredrick"],["Elizabeth","Betty"],["
 val test1c_b = get_substitutions2([["foo"],["there"]], "foo") = []
 val test1c_c = get_substitutions2([["foo", "fighters"],["there"]], "foo") = ["fighters"]
 
-(* Problem 1d Tests TODO: ADD MORE! *)
+(* Problem 1d Test TODO: ADD MORE! *)
 val test1d_a = similar_names( [["Fred","Fredrick"],
                                ["Elizabeth","Betty"],
                                ["Freddie","Fred","F"]],
@@ -32,19 +32,49 @@ val test1d_a = similar_names( [["Fred","Fredrick"],
 	  {first="Freddie",  last="Smith", middle="W"},
 	  {first="Fred",     last="Smith", middle="W"} ]
 
+(* Problem 2a Tests *)
+val test2a_a = card_color((Clubs, Num 2))   = Black
+val test2a_b = card_color((Diamonds, King)) = Red
+val test2a_c = card_color((Spades, Queen))  = Black
+val test2a_d = card_color((Hearts, Ace))    = Red
+
+(* Problem 2b Tests *)
+val test2b_a = card_value((Clubs, Num 2))   = 2
+val test2b_b = card_value((Diamonds, King)) = 10
+val test2b_c = card_value((Spades, Queen))  = 10
+val test2b_d = card_value((Hearts, Ace))    = 11
+
+(* Problem 2c Tests *)
+val test2c_a = remove_card([(Hearts, Ace)], (Hearts, Ace), IllegalMove) = []
+val test2c_b = remove_card([(Hearts, Ace), (Hearts, King)], (Hearts, Ace), IllegalMove) = [(Hearts, King)]
+val test2c_c = remove_card([(Spades, Ace), (Hearts, Ace)], (Hearts, Ace), IllegalMove) = [(Spades, Ace)]
+(* For this test, if handle works then true, otherwise remove_card will
+ * return an answer that definitely isn't (Clubs, Num 2) and give a false *)
+val test2c_d = remove_card([(Spades, Ace)], (Hearts, Ace), IllegalMove) = [(Clubs, Num 2)] handle IllegalMove => true
+
+(* Problem 2d Tests *)
+val test2d_a = all_same_color([(Hearts, Ace), (Hearts, Ace)]) = true
+val test2d_b = all_same_color([(Hearts, Ace), (Diamonds, Num 5)]) = true
+val test2d_c = all_same_color([(Hearts, Ace), (Clubs, Ace)]) = false
+val test2d_d = all_same_color([(Clubs, Jack), (Spades, Ace)]) = true
+
+(* Problem 2e Tests *)
+val test2e_a = sum_cards([(Clubs, Num 2),(Clubs, Num 2)]) = 4
+val test2e_b = sum_cards([(Hearts, Num 2),(Spades, Num 2)]) = 4
+val test2e_c = sum_cards([(Clubs, Num 9),(Clubs, Num 5)]) = 14
+val test2e_d = sum_cards([(Clubs, Num 2),(Spades, Ace)]) = 13
+val test2e_e = sum_cards([(Clubs, Num 2),(Clubs, Num 2), (Clubs, Num 3), (Clubs, Num 3)]) = 10
+val test2e_f = sum_cards([(Clubs, King),(Spades, Queen)]) = 20
+val test2e_g = sum_cards([(Hearts, Jack),(Diamonds, Ace)]) = 21
+
+(* Problem 2f Tests *)
+val test2f_a = score([(Hearts, Num 2),(Clubs, Num 4)],10) = 4
+val test2f_b = score([(Spades, Num 2),(Clubs, Num 4)],10) = 2
+val test2f_c = score([(Hearts, Ace),(Clubs, Num 4)],10) = 15
+val test2f_d = score([(Hearts, Ace),(Diamonds, Num 4)],10) = 7
+val test2f_e = score([(Hearts, Num 2),(Clubs, Num 4)],0) = 18
+
 (*
-val test5 = card_color((Clubs, Num 2)) = Black
-
-val test6 = card_value((Clubs, Num 2)) = 2
-
-val test7 = remove_card([(Hearts, Ace)], (Hearts, Ace), IllegalMove) = []
-
-val test8 = all_same_color([(Hearts, Ace), (Hearts, Ace)]) = true
-
-val test9 = sum_cards([(Clubs, Num 2),(Clubs, Num 2)]) = 4
-
-val test10 = score([(Hearts, Num 2),(Clubs, Num 4)],10) = 4
-
 val test11 = officiate([(Hearts, Num 2),(Clubs, Num 4)],[Draw], 15) = 6
 
 val test12 = officiate([(Clubs,Ace),(Spades,Ace),(Clubs,Ace),(Spades,Ace)],
