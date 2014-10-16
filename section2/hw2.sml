@@ -123,3 +123,27 @@ fun score( cs, goal ) =
 			  true => prelim div 2
 			| false => prelim
 	end
+
+(* Problem 2g *)
+fun officiate( cardlist' : card list, movelist' : move list, goal' : int ) = 
+	let
+		fun loop( heldcards, cardlist, movelist, goal, pts ) = 
+			if pts > goal
+			then pts
+			else case movelist of 
+				  [] => pts
+				| move::mlist => case move of
+					  Discard c => let
+					               val hcards = remove_card( heldcards, c, IllegalMove )
+					               in loop( hcards,
+					                     cardlist, mlist, goal, 
+					                     score( hcards, goal ) )
+					               end
+					| Draw => case cardlist of 
+						  [] => pts
+						| c::cs => loop( c::heldcards, cs, mlist, goal, 
+						                 score( c::heldcards, goal ) )
+
+ 	in
+		loop( [], cardlist', movelist', goal', 0 )
+	end

@@ -74,18 +74,14 @@ val test2f_c = score([(Hearts, Ace),(Clubs, Num 4)],10) = 15
 val test2f_d = score([(Hearts, Ace),(Diamonds, Num 4)],10) = 7
 val test2f_e = score([(Hearts, Num 2),(Clubs, Num 4)],0) = 18
 
-(*
-val test11 = officiate([(Hearts, Num 2),(Clubs, Num 4)],[Draw], 15) = 6
-
-val test12 = officiate([(Clubs,Ace),(Spades,Ace),(Clubs,Ace),(Spades,Ace)],
+(* Problem 2g Tests ... you guys wrote enough, too hard to do more *)
+val test2g_a = officiate([(Hearts, Num 2),(Clubs, Num 4)],[Draw], 15) = 6
+val test2g_b = officiate([(Clubs,Ace),(Spades,Ace),(Clubs,Ace),(Spades,Ace)],
                        [Draw,Draw,Draw,Draw,Draw],
                        42)
              = 3
-
-val test13 = ((officiate([(Clubs,Jack),(Spades,Num(8))],
+val test2g_c = ((officiate([(Clubs,Jack),(Spades,Num(8))],
                          [Draw,Discard(Hearts,Jack)],
                          42);
                false) 
               handle IllegalMove => true)
-
-*)
