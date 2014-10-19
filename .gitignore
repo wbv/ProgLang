@@ -1,0 +1,2 @@
+# ignore pdfs which contain homework problems. May change this later.
+*.pdf
