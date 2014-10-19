@@ -74,14 +74,26 @@ val test2f_c = score([(Hearts, Ace),(Clubs, Num 4)],10) = 15
 val test2f_d = score([(Hearts, Ace),(Diamonds, Num 4)],10) = 7
 val test2f_e = score([(Hearts, Num 2),(Clubs, Num 4)],0) = 18
 
-(* Problem 2g Tests ... you guys wrote enough, too hard to do more *)
+(* Problem 2g Tests *)
 val test2g_a = officiate([(Hearts, Num 2),(Clubs, Num 4)],[Draw], 15) = 6
 val test2g_b = officiate([(Clubs,Ace),(Spades,Ace),(Clubs,Ace),(Spades,Ace)],
-                       [Draw,Draw,Draw,Draw,Draw],
-                       42)
+                         [Draw,Draw,Draw,Draw,Draw],
+                         42)
              = 3
 val test2g_c = ((officiate([(Clubs,Jack),(Spades,Num(8))],
-                         [Draw,Discard(Hearts,Jack)],
-                         42);
+                           [Draw,Discard(Hearts,Jack)],
+                           42);
                false) 
-              handle IllegalMove => true)
+               handle IllegalMove => true)
+val test2g_d = officiate([(Hearts, Num 2),(Clubs, Num 4)],[], 15) = 7
+
+(* Problem 3a Tests *)
+val test3a_a = score_challenge([(Hearts, Ace)], 5) = 2
+val test3a_b = score_challenge([(Hearts, Ace)], 11) = 0
+val test3a_c = score_challenge([(Hearts, Ace)], 13) = 1
+val test3a_d = score_challenge([(Hearts, Ace), (Clubs, Num 4)], 10) = 5
+val test3a_e = score_challenge([(Hearts, Ace), (Clubs, Num 4)], 13) = 6
+(* Gonna skip Problem 3b Tests because there is no added logic to be tested *)
+(* ... yes, I know that's a bad reason. The real reason is I'm lazy. *)
+
+
