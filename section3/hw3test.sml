@@ -31,7 +31,7 @@ val test03_e = longest_string2 ["","q","YEAH"] = "YEAH"
 val test03_f = longest_string2 ["!!!","bc","C","???"] = "???"
 val test03_g = longest_string2 ["A"] = "A"
 
-(* Problem 4a Tests ( copy of 2 ) *)
+(* Problem 4a Tests (copy of 2) *)
 val test04_a = longest_string3 ["A","bc","C"] = "bc"
 val test04_b = longest_string3 ["Abcd","bc","C"] = "Abcd"
 val test04_c = longest_string3 [] = ""
@@ -57,7 +57,7 @@ val test05_e = longest_capitalized ["Cocaine","Adderall","C"] = "Adderall"
 val test05_f = longest_capitalized ["!!!!!!!!!!!","Shorty","said what?"] = "Shorty"
 val test05_g = longest_capitalized [] = ""
 
-(* Problem 6 Tests*)
+(* Problem 6 Tests *)
 val test06_a = rev_string "abc" = "cba"
 val test06_b = rev_string "" = ""
 val test06_c = rev_string "NANERS" = "SRENAN"
@@ -65,11 +65,22 @@ val test06_d = rev_string "Tacocat" = "tacocaT"
 val test06_e = rev_string "raceCar" = "raCecar"
 val test06_f = rev_string "8675309" = "9035768"
 
+(* Problem 7 Tests *)
+val test07_a = first_answer (fn x => if x > 3 then SOME x else NONE) [1,2,3,4,5] = 4
+val test07_b = first_answer (fn x => if x = 5 then SOME x else NONE) [1,2,3,4,5] = 5
+val test07_c = first_answer (fn x => if x > 3 then SOME ~69 else NONE) [1,2,3,4,5] = ~69
+val test07_d = first_answer (fn x => if true then SOME 0 else NONE) [1,2,3,4,5] = 0
+val test07_e = ((first_answer (fn x => if x < ~1 then SOME 0 else NONE) [1,2,3,4,5] = 0; false) handle NoAnswer => true)
+val test07_f = ((first_answer (fn x => if x = 1 then SOME 24 else NONE) [] = 0; false) handle NoAnswer => true)
+
+(* Problem 8 Tests *)
+val test08_a = all_answers (fn x => if x = 1 then SOME [x] else NONE) [2,3,4,5,6,7] = NONE
+val test08_b = all_answers (fn x => if true then SOME [x] else NONE) [1,2,3] = SOME [[1],[2],[3]]
+val test08_c = all_answers (fn x => if x = 0 then SOME x else NONE) [0,0,0] = SOME [0,0,0]
+val test08_d = all_answers (fn x => if x = 0 then SOME x else NONE) [0,0,1] = NONE
+val test08_e = all_answers (fn x => if x = 0 then SOME x else NONE) [] = SOME []
+
 (*
-val test7 = first_answer (fn x => if x > 3 then SOME x else NONE) [1,2,3,4,5] = 4
-
-val test8 = all_answers (fn x => if x = 1 then SOME [x] else NONE) [2,3,4,5,6,7] = NONE
-
 val test9a = count_wildcards Wildcard = 1
 
 val test9b = count_wild_and_variable_lengths (Variable("a")) = 1

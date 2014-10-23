@@ -72,3 +72,24 @@ fun longest_capitalized xs =
 
 (* Problem 6 *)
 fun rev_string x = (String.implode o List.rev o String.explode) x
+
+(* Problem 7 *)
+fun first_answer f xs =
+	case xs of
+	  [] => raise NoAnswer
+	| x::xs' => (case f(x) of
+	               NONE => first_answer f xs'
+	             | SOME v => v)
+
+(* Problem 8 *)
+fun all_answers f xs =
+	let
+		fun all_ans' xs acc =
+			case xs of
+			  [] => SOME acc
+			| x::xs' => (case f(x) of
+			               NONE => NONE
+			             | SOME v => all_ans' xs' (acc @ [v]))
+	in
+		all_ans' xs []
+	end
