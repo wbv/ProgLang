@@ -13,9 +13,16 @@ val test01_e = only_capitals ["all","But","Cats"] = ["But","Cats"]
 val test01_f = only_capitals ["huehue"] = []
 val test01_g = only_capitals ["69!"] = []
 
-(*
-val test2 = longest_string1 ["A","bc","C"] = "bc"
+(* Problem 2 Tests *)
+val test02_a = longest_string1 ["A","bc","C"] = "bc"
+val test02_b = longest_string1 ["Abcd","bc","C"] = "Abcd"
+val test02_c = longest_string1 [] = ""
+val test02_d = longest_string1 ["A","b","C"] = "A"
+val test02_e = longest_string1 ["","q","YEAH"] = "YEAH"
+val test02_f = longest_string1 ["!!!","bc","C","???"] = "!!!"
+val test02_g = longest_string1 ["A"] = "A"
 
+(*
 val test3 = longest_string2 ["A","bc","C"] = "bc"
 
 val test4a= longest_string3 ["A","bc","C"] = "bc"

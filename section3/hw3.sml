@@ -40,3 +40,9 @@ datatype typ = Anything
 (* Problem 1 *)
 fun only_capitals xs = let fun test x = Char.isUpper( String.sub(x,0) )
 	in List.filter test xs end
+
+(* Problem 2 *)
+fun longest_string1 xs =
+	List.foldl (fn (x,y) => if String.size x > String.size y
+	                        then x
+	                        else y) "" xs
