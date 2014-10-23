@@ -1,6 +1,7 @@
 (* Coursera Programming Languages, Homework 3,
  *   by Walter B. Vaughan *)
 
+(**** provided code ****)
 exception NoAnswer
 
 datatype pattern = Wildcard
@@ -46,3 +47,38 @@ fun longest_string1 xs =
 	List.foldl (fn (x,y) => if String.size x > String.size y
 	                        then x
 	                        else y) "" xs
+
+(* Problem 3 *)
+fun longest_string2 xs =
+	List.foldl (fn (x,y) => if String.size x >= String.size y
+							then x
+							else y) "" xs
+
+(* Problem 4 *)
+fun longest_string_helper f =
+	List.foldl (fn (x,y) => if f( String.size x, String.size y )
+	                        then x
+	                        else y) ""
+fun longest_string3 xs =
+	let
+		val f = longest_string_helper (fn (x,y) => x > y)
+	in
+		f xs
+	end
+fun longest_string4 xs =
+	let
+		val f = longest_string_helper (fn (x,y) => x >= y)
+	in
+		f xs
+	end
+
+(* Problem 5 *)
+fun longest_capitalized xs =
+	let
+		val f = longest_string3 o only_capitals
+	in
+		f xs
+	end
+
+(* Problem 6 *)
+fun rev_string x = (String.implode o List.rev o String.explode) x

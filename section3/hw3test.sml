@@ -22,17 +22,50 @@ val test02_e = longest_string1 ["","q","YEAH"] = "YEAH"
 val test02_f = longest_string1 ["!!!","bc","C","???"] = "!!!"
 val test02_g = longest_string1 ["A"] = "A"
 
+(* Problem 3 Tests (like 2 but with slight differences) *)
+val test03_a = longest_string2 ["A","bc","C"] = "bc"
+val test03_b = longest_string2 ["Abcd","bc","C"] = "Abcd"
+val test03_c = longest_string2 [] = ""
+val test03_d = longest_string2 ["A","b","C"] = "C"
+val test03_e = longest_string2 ["","q","YEAH"] = "YEAH"
+val test03_f = longest_string2 ["!!!","bc","C","???"] = "???"
+val test03_g = longest_string2 ["A"] = "A"
+
+(* Problem 4a Tests ( copy of 2 ) *)
+val test04_a = longest_string3 ["A","bc","C"] = "bc"
+val test04_b = longest_string3 ["Abcd","bc","C"] = "Abcd"
+val test04_c = longest_string3 [] = ""
+val test04_d = longest_string3 ["A","b","C"] = "A"
+val test04_e = longest_string3 ["","q","YEAH"] = "YEAH"
+val test04_f = longest_string3 ["!!!","bc","C","???"] = "!!!"
+val test04_g = longest_string3 ["A"] = "A"
+(* Problem 4b Tests (copy of 3 ) *)
+val test04_h = longest_string4 ["A","bc","C"] = "bc"
+val test04_i = longest_string4 ["Abcd","bc","C"] = "Abcd"
+val test04_j = longest_string4 [] = ""
+val test04_k = longest_string4 ["A","b","C"] = "C"
+val test04_l = longest_string4 ["","q","YEAH"] = "YEAH"
+val test04_m = longest_string4 ["!!!","bc","C","???"] = "???"
+val test04_n = longest_string4 ["A"] = "A"
+
+(* Problem 5 Tests *)
+val test05_a = longest_capitalized ["A","bc","C"] = "A"
+val test05_b = longest_capitalized ["A","Bc","C"] = "Bc"
+val test05_c = longest_capitalized ["Ab","Bc","C"] = "Ab"
+val test05_d = longest_capitalized ["A"] = "A"
+val test05_e = longest_capitalized ["Cocaine","Adderall","C"] = "Adderall"
+val test05_f = longest_capitalized ["!!!!!!!!!!!","Shorty","said what?"] = "Shorty"
+val test05_g = longest_capitalized [] = ""
+
+(* Problem 6 Tests*)
+val test06_a = rev_string "abc" = "cba"
+val test06_b = rev_string "" = ""
+val test06_c = rev_string "NANERS" = "SRENAN"
+val test06_d = rev_string "Tacocat" = "tacocaT"
+val test06_e = rev_string "raceCar" = "raCecar"
+val test06_f = rev_string "8675309" = "9035768"
+
 (*
-val test3 = longest_string2 ["A","bc","C"] = "bc"
-
-val test4a= longest_string3 ["A","bc","C"] = "bc"
-
-val test4b= longest_string4 ["A","B","C"] = "C"
-
-val test5 = longest_capitalized ["A","bc","C"] = "A";
-
-val test6 = rev_string "abc" = "cba";
-
 val test7 = first_answer (fn x => if x > 3 then SOME x else NONE) [1,2,3,4,5] = 4
 
 val test8 = all_answers (fn x => if x = 1 then SOME [x] else NONE) [2,3,4,5,6,7] = NONE
