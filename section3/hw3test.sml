@@ -75,21 +75,59 @@ val test07_f = ((first_answer (fn x => if x = 1 then SOME 24 else NONE) [] = 0; 
 
 (* Problem 8 Tests *)
 val test08_a = all_answers (fn x => if x = 1 then SOME [x] else NONE) [2,3,4,5,6,7] = NONE
-val test08_b = all_answers (fn x => if true then SOME [x] else NONE) [1,2,3] = SOME [[1],[2],[3]]
+val test08_b = all_answers (fn x => if true then SOME [x] else NONE) [1,2,3] = SOME [[3],[2],[1]]
 val test08_c = all_answers (fn x => if x = 0 then SOME x else NONE) [0,0,0] = SOME [0,0,0]
 val test08_d = all_answers (fn x => if x = 0 then SOME x else NONE) [0,0,1] = NONE
 val test08_e = all_answers (fn x => if x = 0 then SOME x else NONE) [] = SOME []
 
+(* Problem 9a Tests *)
+val test09_a = count_wildcards Wildcard = 1
+val test09_b = count_wildcards (TupleP [Wildcard,Wildcard]) = 2
+val test09_c = count_wildcards (Variable "nope") = 0
+val test09_d = count_wildcards UnitP = 0
+val test09_e = count_wildcards (ConstP 12) = 0
+val test09_f = count_wildcards (TupleP [(TupleP [Wildcard,Wildcard]), Wildcard]) = 3
+(* Problem 9b Tests *)
+val test09_g = count_wild_and_variable_lengths (Variable("a")) = 1
+val test09_h = count_wild_and_variable_lengths (TupleP [Variable("a"),Wildcard]) = 2
+val test09_i = count_wild_and_variable_lengths (Variable("blah")) = 4
+val test09_j = count_wild_and_variable_lengths (Variable("")) = 0
+val test09_k = count_wild_and_variable_lengths (TupleP [Variable("Mult"),Variable("iple.")]) = 9
+val test09_l = count_wild_and_variable_lengths (UnitP) = 0
+val test09_m = count_wild_and_variable_lengths (ConstP 69) = 0
+
+(* Problem 9c Tests *)
+val test09_n = count_some_var ("x", Variable("x")) = 1;
+val test09_o = count_some_var ("y", Variable("x")) = 0;
+val test09_p = count_some_var ("z", TupleP [Variable("x"), Variable("y"), Variable("z"), Variable("z")]) = 2;
+val test09_q = count_some_var ("x", ConstP 12) = 0;
+val test09_r = count_some_var ("x", UnitP) = 0;
+val test09_s = count_some_var ("x", Wildcard) = 0;
+val test09_t = count_some_var ("x", ConstructorP("x",Variable("y"))) = 0;
+val test09_u = count_some_var ("x", ConstructorP("y",Variable("x"))) = 1;
+
+(* Problem 10 Tests *)
+val test10_a = check_pat (Variable("x")) = true
+val test10_b = check_pat (ConstP 24) = true
+val test10_c = check_pat (TupleP [Variable("x"),Variable("x")]) = false
+val test10_d = check_pat (TupleP [Variable("x"),Variable("y")]) = true
+val test10_e = check_pat (UnitP) = true
+val test10_f = check_pat (Wildcard) = true
+val test10_g = check_pat (TupleP [TupleP [Variable("x"),Variable("y")], Variable("x")]) = false
+val test10_h = check_pat (ConstructorP("x",Variable("x"))) = true
+val test10_i = check_pat (TupleP [ConstructorP("x",Variable("x")),ConstructorP("x",Variable("y"))]) = true
+val test10_j = check_pat (TupleP [ConstructorP("x",Variable("x")),ConstructorP("y",Variable("x"))]) = false
+
+(* Problem 11 Tests *)
+val test11_a = match (Const(1), UnitP) = NONE
+val test11_b = match (Const(1), ConstP(1)) = SOME []
+val test11_c = match (Const(1), ConstP(2)) = NONE
+val test11_d = match (Unit, UnitP) = SOME []
+val test11_e = match (Const(25), Wildcard) = SOME []
+val test11_f = match (Constructor("two",Const(2)), ConstructorP("two", ConstP(2))) = SOME []
+val test11_g = match (Constructor("two",Const(3)), ConstructorP("two", ConstP(2))) = NONE
+val test11_h = match (Constructor("two",Const(2)), ConstructorP("tre", ConstP(2))) = NONE
+
 (*
-val test9a = count_wildcards Wildcard = 1
-
-val test9b = count_wild_and_variable_lengths (Variable("a")) = 1
-
-val test9c = count_some_var ("x", Variable("x")) = 1;
-
-val test10 = check_pat (Variable("x")) = true
-
-val test11 = match (Const(1), UnitP) = NONE
-
 val test12 = first_match Unit [UnitP] = SOME []
 *)

@@ -89,7 +89,52 @@ fun all_answers f xs =
 			  [] => SOME acc
 			| x::xs' => (case f(x) of
 			               NONE => NONE
-			             | SOME v => all_ans' xs' (acc @ [v]))
+			             | SOME v => all_ans' xs' (v::acc))
 	in
 		all_ans' xs []
 	end
+
+(* Problem 9a *)
+val count_wildcards = g (fn () => 1) (fn s => 0)
+
+(* Problem 9b *)
+val count_wild_and_variable_lengths = g (fn () => 1) (fn s => String.size s)
+
+(* Problem 9c *)
+fun count_some_var (x,p) = g (fn () => 0) (fn s => if s = x then 1 else 0) p
+
+(* Problem 10 *)
+fun check_pat p =
+	let
+		fun get_strings pat =
+			case pat of
+			  Variable x         => [x]
+			| TupleP ps          => List.foldl (fn (p,i) => i @ (get_strings p))
+			                                   []
+			                                   ps
+			| ConstructorP(_,p') => get_strings p'
+			| _                  => []
+		fun not_duped xs cnt (n, acc) =
+			if not acc orelse cnt > 1
+			then false
+			else case xs of
+			       [] => true
+			     | x::xs' => not_duped xs' ((if x = n then 1 else 0)+cnt) (n, acc)
+		val strs = get_strings p
+	in
+		List.foldl (not_duped strs 0) true strs
+	end
+
+(* Problem 11 *)
+fun match (v,p) =
+	case p of
+	  Wildcard            => SOME []
+	| Variable s          => SOME [(s,v)]
+	| UnitP               => if v = Unit then SOME [] else NONE
+	| ConstP n            => if v = Const n then SOME [] else NONE
+	| TupleP ps           => NONE (* TODO: Fix this one *)
+	| ConstructorP(s1,p1) => (case v of
+	                            Constructor(s2,v1) => if s2 = s1
+	                                                  then match(v1,p1)
+	                                                  else NONE
+	                          | _                  => NONE)
