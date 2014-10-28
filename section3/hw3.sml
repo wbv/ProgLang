@@ -89,7 +89,7 @@ fun all_answers f xs =
 			  [] => SOME acc
 			| x::xs' => (case f(x) of
 			               NONE => NONE
-			             | SOME v => all_ans' xs' (v::acc))
+			             | SOME v => all_ans' xs' (v@acc))
 	in
 		all_ans' xs []
 	end
@@ -127,14 +127,24 @@ fun check_pat p =
 
 (* Problem 11 *)
 fun match (v,p) =
-	case p of
-	  Wildcard            => SOME []
-	| Variable s          => SOME [(s,v)]
-	| UnitP               => if v = Unit then SOME [] else NONE
-	| ConstP n            => if v = Const n then SOME [] else NONE
-	| TupleP ps           => NONE (* TODO: Fix this one *)
-	| ConstructorP(s1,p1) => (case v of
-	                            Constructor(s2,v1) => if s2 = s1
-	                                                  then match(v1,p1)
-	                                                  else NONE
-	                          | _                  => NONE)
+	case (v,p) of
+	  (_,Wildcard)          => SOME []
+	| (v',Variable s)       => SOME [(s,v')]
+	| (Unit,UnitP)          => SOME []
+	| (Const n,ConstP m)    => if n = m then SOME [] else NONE
+	| (Constructor(s1,v1),ConstructorP(s2,p1)) => if s1 = s2 then match(v1,p1)
+	                                              else NONE
+	| (Tuple vs, TupleP ps) => if List.length(ps) = List.length(vs)
+	                           then all_answers
+	                                (fn (vn,pn) =>
+	                                 if isSome (match(vn,pn))
+	                                 then match(vn,pn)
+	                                 else NONE)
+	                                (ListPair.zip(vs,ps))
+	                           else NONE
+	| _ => NONE
+
+(* Problem 12 *)
+fun first_match v ps =
+	SOME (first_answer match (List.map (fn x => (v,x)) ps))
+	handle NoAnswer => NONE

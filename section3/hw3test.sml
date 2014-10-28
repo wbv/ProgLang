@@ -75,10 +75,11 @@ val test07_f = ((first_answer (fn x => if x = 1 then SOME 24 else NONE) [] = 0; 
 
 (* Problem 8 Tests *)
 val test08_a = all_answers (fn x => if x = 1 then SOME [x] else NONE) [2,3,4,5,6,7] = NONE
-val test08_b = all_answers (fn x => if true then SOME [x] else NONE) [1,2,3] = SOME [[3],[2],[1]]
-val test08_c = all_answers (fn x => if x = 0 then SOME x else NONE) [0,0,0] = SOME [0,0,0]
-val test08_d = all_answers (fn x => if x = 0 then SOME x else NONE) [0,0,1] = NONE
-val test08_e = all_answers (fn x => if x = 0 then SOME x else NONE) [] = SOME []
+val test08_b = all_answers (fn x => if true then SOME [x] else NONE) [1,2,3] = SOME [3,2,1]
+val test08_c = all_answers (fn x => if x = 0 then SOME [x] else NONE) [0,0,0] = SOME [0,0,0]
+val test08_d = all_answers (fn x => if x = 0 then SOME [x,1] else NONE) [0,0,0] = SOME [0,1,0,1,0,1]
+val test08_e = all_answers (fn x => if x = 0 then SOME [x] else NONE) [0,0,1] = NONE
+val test08_f = all_answers (fn x => if x = 0 then SOME [x] else NONE) [] = SOME []
 
 (* Problem 9a Tests *)
 val test09_a = count_wildcards Wildcard = 1
@@ -127,7 +128,12 @@ val test11_e = match (Const(25), Wildcard) = SOME []
 val test11_f = match (Constructor("two",Const(2)), ConstructorP("two", ConstP(2))) = SOME []
 val test11_g = match (Constructor("two",Const(3)), ConstructorP("two", ConstP(2))) = NONE
 val test11_h = match (Constructor("two",Const(2)), ConstructorP("tre", ConstP(2))) = NONE
+val test11_i = match ((Tuple [Unit, Const(1)]), (TupleP [UnitP, ConstP(1)])) = SOME []
+val test11_j = match ((Tuple [Unit]), (TupleP [UnitP, ConstP(1)])) = NONE
 
-(*
-val test12 = first_match Unit [UnitP] = SOME []
-*)
+(* Problem 12 Tests *)
+val test12_a = first_match Unit [UnitP] = SOME []
+val test12_b = first_match Unit [ConstP 2] = NONE
+val test12_c = first_match Unit [ConstP 2, UnitP] = SOME []
+val test12_d = first_match Unit [ConstP 2, Wildcard, Variable "q"] = SOME []
+val test12_e = first_match Unit [ConstP 2, Variable "q", Wildcard] = SOME [("q",Unit)]
