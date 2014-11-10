@@ -1,4 +1,5 @@
-;; homework 4 by Walter B. Vaughan
+;; Coursera - Programming Languages (UofW)
+;;   homework 4 by Walter B. Vaughan
 
 #lang racket
 
@@ -50,18 +51,50 @@
                             (λ () (f (cdr (s2))))))])
     (λ () (f s))))
 
-;; Problem 8 ---incomplete
+;; Problem 8
 (define (cycle-lists xs ys)
   (letrec ([f (λ (n) (cons (cons (list-nth-mod xs n)
                                  (list-nth-mod ys n))
                            (λ () (f (+ n 1)))))])
     (λ () (f 0))))
 
-;; Problem 9 ---incomplete
-(define (vector-assoc v vec) #f)
+;; Problem 9
+(define (vector-assoc v vec)
+  (letrec ([f (λ (n)
+              (if (= n (vector-length vec)) ; check to see if we hit the end of the vector
+                  #f
+                  (let ([c (vector-ref vec n)]) ; c -> current element in vec
+                    (if (and (pair? c) (equal? (car c) v))
+                        c
+                        (f (+ n 1))))))])
+    (f 0)))
+                       
 
-;; Problem 10 --incomplete
-(define (cached-assoc xs n) (λ v (0)))
+;; Problem 10
+(define (cached-assoc xs n)
+  (letrec ([cache (make-vector n #f)]
+           [cache-pos 0]
+           [f (λ (v)
+                (let ([ans (vector-assoc v cache)])
+                  (if ans
+                      ans
+                      (let ([new-ans (assoc v xs)])
+                        (when new-ans
+                            (begin
+                              (vector-set! cache cache-pos new-ans)
+                              (set! cache-pos (+ cache-pos 1))          ; increment cache "pointer"
+                              (when (= cache-pos n) (set! cache-pos 0)) ; loop around to start of cache
+                              new-ans))
+                        new-ans))))])
+    f))
 
-;; Challenge Problem (11) ---incomplete
-(define (while-less) 0)
+;; Challenge Problem (11) 
+(define-syntax while-less
+  (syntax-rules (do)
+    [(while-less e1 do e2)
+     (let ([n e1])
+       (letrec ([f (λ ()
+                     (if (>= e2 n)
+                         #t
+                         (f)))])
+         (f)))]))
