@@ -2,4 +2,6 @@
 *.pdf
 
 # DrRacket likes to make .rkt~ files which we don't need
+# ...also some compiled stuff which I think has to do with debugging.
 *.rkt~
+*compiled/*
