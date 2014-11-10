@@ -1,2 +1,5 @@
 # ignore pdfs which contain homework problems. May change this later.
 *.pdf
+
+# DrRacket likes to make .rkt~ files which we don't need
+*.rkt~
