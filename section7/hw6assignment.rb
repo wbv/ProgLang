@@ -18,11 +18,19 @@ class MyPiece < Piece
                      rotations([[0, 0], [1, 0], [0, 1]])]
 
     def self.next_piece (board) #overridden
-        MyPiece.new(All_My_Pieces.sample, board)
+        # ENHANCEMENT 3
+        if board.cheat_called
+            board.cheat_called = false
+            MyPiece.new([[[0,0]]], board)
+        else
+            MyPiece.new(All_My_Pieces.sample, board)
+        end
     end
 end
 
 class MyBoard < Board
+
+    attr_accessor :cheat_called  # cheat flag, ENHANCEMENT 3
 
     def initialize (game) #overridden
         @grid = Array.new(num_rows) {Array.new(num_columns)}
@@ -30,6 +38,9 @@ class MyBoard < Board
         @score = 0
         @game = game
         @delay = 500
+
+        # ENHANCEMENT 3
+        @cheat_called = false
     end
     def next_piece #overridden
         @current_block = MyPiece.next_piece(self)
@@ -57,25 +68,38 @@ class MyBoard < Board
         end
         draw
     end
+
+    # sets the cheat 'flag' and adjusts score, ENHANCEMENT 3
+    def try_to_cheat
+        if @score >= 100 and not @cheat_called
+            @score -= 100
+            @cheat_called = true
+            draw
+        end
+    end
+
 end
 
 class MyTetris < Tetris
     def key_bindings #overridden
         # binding for 180 degree spin, ENHANCEMENT 1
         @root.bind('u', proc {@board.rotate_180})
-        # pre-existing binds
+        # binding for cheat key, ENHANCEMENT 3
+        @root.bind('c', proc {@board.try_to_cheat})
+
+        # copied pre-existing binds
         @root.bind('n', proc {self.new_game})
         @root.bind('p', proc {self.pause})
         @root.bind('q', proc {exitProgram})
-        @root.bind('a', proc {@board.move_left})
+        @root.bind('a',    proc {@board.move_left})
         @root.bind('Left', proc {@board.move_left})
-        @root.bind('d', proc {@board.move_right})
+        @root.bind('d',     proc {@board.move_right})
         @root.bind('Right', proc {@board.move_right})
-        @root.bind('s', proc {@board.rotate_clockwise})
+        @root.bind('s',    proc {@board.rotate_clockwise})
         @root.bind('Down', proc {@board.rotate_clockwise})
-        @root.bind('w', proc {@board.rotate_counter_clockwise})
+        @root.bind('w',  proc {@board.rotate_counter_clockwise})
         @root.bind('Up', proc {@board.rotate_counter_clockwise})
-        @root.bind('space' , proc {@board.drop_all_the_way})
+        @root.bind('space', proc {@board.drop_all_the_way})
     end
 
     # to use sub-classed 'enhanced' versions
