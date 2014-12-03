@@ -1,6 +1,6 @@
 # University of Washington, Programming Languages, Homework 7, hw7.rb
 # (See also ML code)
-#    completed by Walter B. Vaughan
+#  completed by Walter B. Vaughan
 
 # a little language for 2D geometry objects
 
@@ -11,12 +11,12 @@
 #   * shift
 #   * intersect, which uses the double-dispatch pattern
 #   * intersectPoint, intersectLine, and intersectVerticalLine for
-#       for being called by intersect of appropriate clases and doing
-#       the correct intersection calculuation
+#     for being called by intersect of appropriate clases and doing
+#     the correct intersection calculuation
 #   * (We would need intersectNoPoints and intersectLineSegment, but these
-#      are provided by GeometryValue and should not be overridden.)
-#   *  intersectWithSegmentAsLineResult, which is used by
-#      intersectLineSegment as described in the assignment
+#     are provided by GeometryValue and should not be overridden.)
+#   * intersectWithSegmentAsLineResult, which is used by
+#     intersectLineSegment as described in the assignment
 #
 # you can define other helper methods, but will not find much need to
 
@@ -69,6 +69,17 @@ class GeometryValue
     line_result = intersect(two_points_to_line(seg.x1,seg.y1,seg.x2,seg.y2))
     line_result.intersectWithSegmentAsLineResult seg
   end
+
+
+  ### ADDED these since all values eval to themselves
+  ###       and all values preprocess to themselves (except linesegment)
+  ###       so we'll override preprocess_prog in the LineSegment class
+  def eval_prog env
+    self
+  end
+  def preprocess_prog
+    self
+  end
 end
 
 class NoPoints < GeometryValue
@@ -78,17 +89,11 @@ class NoPoints < GeometryValue
   # However, you *may* move methods from here to a superclass if you wish to
 
   # Note: no initialize method only because there is nothing it needs to do
-  def eval_prog env
-    self # all values evaluate to self
-  end
-  def preprocess_prog
-    self # no pre-processing to do here
-  end
   def shift(dx,dy)
     self # shifting no-points is no-points
   end
   def intersect other
-    other.intersectNoPoints self # will be NoPoints but follow double-dispatch
+    other.intersectPoint self # will be NoPoints but follow double-dispatch
   end
   def intersectPoint p
     self # intersection with point and no-points is no-points
@@ -120,34 +125,9 @@ class Point < GeometryValue
     @y = y
   end
 
-
-  ### My methods start here:
-  def eval_prog env
-    self
-  end
-  def preprocess_prog
-    self # no pre-processing to do here
-  end
+  ### PROBLEM 3
   def shift(dx,dy)
-    self # shifting no-points is no-points
-  end
-  def intersect other
-    other.intersectNoPoints self # will be NoPoints but follow double-dispatch
-  end
-  def intersectPoint p
-    self # intersection with point and no-points is no-points
-  end
-  def intersectLine line
-    self # intersection with line and no-points is no-points
-  end
-  def intersectVerticalLine vline
-    self # intersection with line and no-points is no-points
-  end
-  # if self is the intersection of (1) some shape s and (2)
-  # the line containing seg, then we return the intersection of the
-  # shape s and the seg.  seg is an instance of LineSegment
-  def intersectWithSegmentAsLineResult seg
-    self
+    Point.new(x+dx, y+dy)
   end
 end
 
@@ -159,6 +139,11 @@ class Line < GeometryValue
     @m = m
     @b = b
   end
+
+  ### PROBLEM 3
+  def shift(dx,dy)
+    Line.new(m, b+dy - m*dx)
+  end
 end
 
 class VerticalLine < GeometryValue
@@ -167,6 +152,11 @@ class VerticalLine < GeometryValue
   attr_reader :x
   def initialize x
     @x = x
+  end
+
+  ### PROBLEM 3
+  def shift(dx,dy)
+    Line.new(x+dx)
   end
 end
 
@@ -182,6 +172,21 @@ class LineSegment < GeometryValue
     @y1 = y1
     @x2 = x2
     @y2 = y2
+  end
+
+  ### PROBLEM 3
+  def shift(dx,dy)
+    LineSegment.new(x1+dx,y1+dy, x2+dx,y2+dy)
+  end
+  ### Overridden method from GeometryValue
+  def preprocess_prog
+    if real_close_point(x1,y1, x2,y2)
+      Point.new(x1,y1)
+    elsif (x2 < x1) || (real_close(x1,x2) && y2 < y1)
+      LineSegment.new(x2,y2, x1,y1)
+    else
+      self
+    end
   end
 end
 
@@ -205,6 +210,15 @@ class Let < GeometryExpression
     @e1 = e1
     @e2 = e2
   end
+
+  ### PROBLEM 3
+  def preprocess_prog
+    Let.new(@s, @e1.preprocess_prog, @e2.preprocess_prog)
+  end
+
+  def eval_prog env
+    @e2.eval_prog ([[@s, @e1.eval_prog]] + env)
+  end
 end
 
 class Var < GeometryExpression
@@ -218,6 +232,11 @@ class Var < GeometryExpression
     raise "undefined variable" if pr.nil?
     pr[1]
   end
+
+  ### PROBLEM 3
+  def preprocess_prog
+    self
+  end
 end
 
 class Shift < GeometryExpression
@@ -227,5 +246,14 @@ class Shift < GeometryExpression
     @dx = dx
     @dy = dy
     @e = e
+  end
+
+  ### PROBLEM 3
+  def preprocess_prog
+    Shift.new(@dx, @dy, @e.preprocess_prog)
+  end
+
+  def eval_prog env
+    @e.shift(@dx,@dy).eval_prog env
   end
 end
