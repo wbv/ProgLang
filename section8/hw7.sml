@@ -210,7 +210,7 @@ fun eval_prog (e,env) =
       | Shift(dx,dy,subexp) =>
         (case eval_prog (subexp,env) of
             Point(x,y) => Point(x+dx,y+dy)
-          | Line(m,b) => Line(m, b+dy - m*dy)
+          | Line(m,b) => Line(m, b+dy - m*dx)
           | VerticalLine x => VerticalLine (x+dx)
           | LineSegment(x1,y1, x2,y2) =>
                 LineSegment(x1+dx,y1+dy, x2+dx,y2+dy)
