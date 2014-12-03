@@ -4,7 +4,7 @@
 # Notes for the reader:
 # Methods which are mostly just copy-pasted have an '#overridden' next to them.
 # I tried to put comments next to code with their relevance to each enhancement
-# like "ENHANCEMENT 2",
+# for example, "ENHANCEMENT 2"
 
 class MyPiece < Piece
     # include new pieces, ENHANCEMENT 2
@@ -13,7 +13,7 @@ class MyPiece < Piece
                     [rotations([[0, 0], [-1, 0], [1, 0], [0, -1], [-1, -1]]),
                      # 5-long (only needs two)
                      [[[0, 0], [-1, 0], [-2, 0], [1, 0], [2, 0]],
-                     [[0, 0], [0, -1], [0, -2], [0, 1], [0, 2]]],
+                      [[0, 0], [0, -1], [0, -2], [0, 1], [0, 2]]],
                      # 3-corner
                      rotations([[0, 0], [1, 0], [0, 1]])]
 
